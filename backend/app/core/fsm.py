@@ -59,3 +59,17 @@ class BaseFSMAction(ABC):
 
     def _assigned_reviewer(self, reviewer: str) -> str | None:
         return None
+
+
+def get_allowed_actions(status: str, db: Session) -> list[str]:
+    """Return the action names that are valid from the given status, or [] if terminal."""
+    state = db.query(State).filter(State.name == status).first()
+    if state is None or state.is_terminal:
+        return []
+    rows = (
+        db.query(Action.name)
+        .join(StateTransition, StateTransition.action_id == Action.id)
+        .filter(StateTransition.from_state_id == state.id)
+        .all()
+    )
+    return [row[0] for row in rows]
