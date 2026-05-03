@@ -25,8 +25,7 @@ class ReviewItemRecord(TypedDict):
 
 
 def seed_review_items(db: Session) -> None:
-    if db.query(ReviewItem).count() > 0:
-        return
+    db.query(ReviewItem).delete()
 
     records: list[ReviewItemRecord] = json.loads(REVIEW_ITEMS_FILE.read_text())
 
