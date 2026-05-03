@@ -31,9 +31,7 @@ def seed_review_items(db: Session) -> None:
     records: list[ReviewItemRecord] = json.loads(REVIEW_ITEMS_FILE.read_text())
 
     for record in records:
-        submitted_at = datetime.fromisoformat(
-            record["submitted_at"].replace("Z", "+00:00")
-        )
+        submitted_at = datetime.fromisoformat(record["submitted_at"].replace("Z", "+00:00"))
         if submitted_at.tzinfo is None:
             submitted_at = submitted_at.replace(tzinfo=UTC)
 
