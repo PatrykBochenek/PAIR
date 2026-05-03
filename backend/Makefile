@@ -1,4 +1,4 @@
-.PHONY: dev lint fmt typecheck
+.PHONY: dev lint fmt typecheck migrate
 
 dev:
 	uv run uvicorn app.main:app --reload --port 8000
@@ -11,3 +11,6 @@ fmt:
 
 typecheck:
 	uv run mypy app/
+
+migrate:
+	uv run alembic upgrade head
